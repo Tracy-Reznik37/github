@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#f8f7f2">
+	<title>拾光旅行｜把世界，慢慢走一遍</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--ink: #202821;
+			--muted: #777e75;
+			--green: #3f674f;
+			--green-dark: #294a37;
+			--cream: #f8f7f2;
+			--line: #e9e8e0;
+		}
+
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+		body {
+			margin: 0;
+			color: var(--ink);
+			background: var(--cream);
+			font-family: "DM Sans", "Noto Sans SC", sans-serif;
+			-webkit-font-smoothing: antialiased;
+		}
+		a { color: inherit; text-decoration: none; }
+		button, input { font: inherit; }
+		.page-shell { max-width: 1440px; margin: 0 auto; padding: 0 6.1%; }
+
+		.site-header {
+			height: 82px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 32px;
+		}
+		.brand { display: inline-flex; align-items: center; gap: 10px; font-size: 21px; font-weight: 800; letter-spacing: -.8px; white-space: nowrap; }
+		.brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 12px; color: #fff; background: var(--green); }
+		.brand-mark svg { width: 20px; height: 20px; }
+		.main-nav { display: flex; align-items: center; gap: 36px; color: #626a62; font-size: 14px; }
+		.main-nav a { transition: color .2s; }
+		.main-nav a:hover, .main-nav a.active { color: var(--green-dark); }
+		.header-actions { display: flex; align-items: center; gap: 18px; font-size: 14px; white-space: nowrap; }
+		.login { color: #586158; }
+		.join { padding: 11px 19px; border-radius: 999px; color: #fff; background: var(--green); font-weight: 600; transition: background .2s, transform .2s; }
+		.join:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+		.hero {
+			min-height: 570px;
+			position: relative;
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			border-radius: 26px;
+			color: white;
+			background: #64776a url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=2200&q=88") center 53% / cover;
+		}
+		.hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20, 35, 29, .67) 0%, rgba(24, 38, 32, .35) 48%, rgba(22, 37, 32, .05) 100%), linear-gradient(0deg, rgba(22, 36, 31, .23), transparent 42%); }
+		.hero-content { position: relative; z-index: 1; width: min(700px, 100%); padding: 65px 7.3% 95px; }
+		.eyebrow { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 21px; color: rgba(255,255,255,.88); font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+		.eyebrow::before { content: ""; width: 25px; height: 1px; background: #c5d8bd; }
+		h1 { max-width: 580px; margin: 0; font-size: clamp(42px, 5.5vw, 70px); line-height: 1.15; letter-spacing: -2.5px; font-weight: 700; }
+		.hero-copy { margin: 20px 0 0; color: rgba(255,255,255,.85); font-size: 16px; line-height: 1.9; letter-spacing: .5px; }
+		.hero-link { display: inline-flex; align-items: center; gap: 11px; margin-top: 27px; font-size: 14px; font-weight: 600; }
+		.hero-link span { width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.72); border-radius: 50%; transition: background .2s; }
+		.hero-link:hover span { background: rgba(255,255,255,.2); }
+		.hero-note { position: absolute; right: 34px; bottom: 29px; display: flex; align-items: center; gap: 9px; color: rgba(255,255,255,.88); font-size: 12px; }
+		.hero-note::before { content: ""; width: 23px; height: 1px; background: rgba(255,255,255,.7); }
+
+		.search-wrap { position: relative; z-index: 2; margin: -37px auto 0; width: min(900px, calc(100% - 52px)); }
+		.search-bar { min-height: 78px; display: grid; grid-template-columns: 1.3fr 1fr 1fr auto; align-items: center; padding: 11px; border: 1px solid rgba(32,40,33,.05); border-radius: 17px; background: #fff; box-shadow: 0 14px 40px rgba(42, 55, 45, .12); }
+		.search-field { min-width: 0; display: flex; align-items: center; gap: 12px; padding: 0 20px; border-right: 1px solid var(--line); }
+		.search-field svg { flex: 0 0 auto; width: 20px; height: 20px; color: #718176; }
+		.field-copy { min-width: 0; display: grid; gap: 5px; }
+		.field-copy label { color: #303a32; font-size: 12px; font-weight: 700; }
+		.field-copy input { width: 100%; min-width: 0; padding: 0; border: 0; outline: 0; color: #878d86; background: transparent; font-size: 12px; }
+		.field-copy input::placeholder { color: #92978f; opacity: 1; }
+		.search-button { height: 54px; min-width: 122px; display: flex; justify-content: center; align-items: center; gap: 9px; border: 0; border-radius: 11px; color: #fff; background: var(--green); cursor: pointer; font-weight: 600; transition: background .2s; }
+		.search-button:hover { background: var(--green-dark); }
+		.search-button svg { width: 17px; height: 17px; }
+
+		.section { padding-top: 91px; }
+		.section-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
+		.section-kicker { margin: 0 0 9px; color: #718071; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+		h2 { margin: 0; font-size: clamp(25px, 3vw, 34px); line-height: 1.35; letter-spacing: -.8px; }
+		.section-subtitle { margin: 9px 0 0; color: var(--muted); font-size: 14px; }
+		.text-link { display: inline-flex; align-items: center; gap: 9px; padding-bottom: 5px; color: var(--green); font-size: 13px; font-weight: 700; white-space: nowrap; }
+		.text-link span { font-size: 18px; transition: transform .2s; }
+		.text-link:hover span { transform: translateX(4px); }
+		.destination-grid { display: grid; grid-template-columns: 1.32fr 1fr 1fr; grid-template-rows: 226px 226px; gap: 16px; }
+		.destination-card { position: relative; overflow: hidden; border-radius: 17px; background: #d4d7cd; isolation: isolate; }
+		.destination-card:first-child { grid-row: span 2; }
+		.destination-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .55s cubic-bezier(.2,.7,.2,1); }
+		.destination-card:hover img { transform: scale(1.055); }
+		.destination-card::after { content: ""; position: absolute; z-index: 0; inset: 30% 0 0; background: linear-gradient(0deg, rgba(15,26,21,.72), transparent); }
+		.destination-info { position: absolute; z-index: 1; right: 20px; bottom: 19px; left: 20px; display: flex; justify-content: space-between; align-items: end; color: #fff; }
+		.destination-info h3 { margin: 0 0 5px; font-size: 20px; }
+		.destination-info p { margin: 0; color: rgba(255,255,255,.83); font-size: 12px; }
+		.destination-count { padding: 7px 10px; border: 1px solid rgba(255,255,255,.48); border-radius: 999px; font-size: 11px; white-space: nowrap; }
+
+		.inspiration { padding: 89px 0 93px; }
+		.inspiration-panel { min-height: 290px; position: relative; overflow: hidden; display: flex; align-items: center; border-radius: 23px; background: #e8e9dc; }
+		.inspiration-panel img { position: absolute; top: 0; right: 0; width: 56%; height: 100%; object-fit: cover; object-position: center 48%; }
+		.inspiration-panel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #e8e9dc 0%, #e8e9dc 39%, rgba(232,233,220,.82) 51%, rgba(232,233,220,0) 75%); }
+		.inspiration-copy { position: relative; z-index: 1; width: 56%; padding: 47px 6.5%; }
+		.inspiration-copy h2 { max-width: 390px; }
+		.inspiration-copy p { max-width: 380px; margin: 13px 0 23px; color: #697268; font-size: 14px; line-height: 1.8; }
+		.solid-link { display: inline-flex; align-items: center; gap: 13px; padding: 12px 17px; border-radius: 9px; color: #fff; background: var(--green); font-size: 13px; font-weight: 600; }
+		.solid-link:hover { background: var(--green-dark); }
+
+		.site-footer { border-top: 1px solid var(--line); padding: 25px 0 30px; color: #7d837b; font-size: 12px; }
+		.footer-inner { display: flex; justify-content: space-between; gap: 20px; }
+		.footer-links { display: flex; gap: 22px; }
+		.footer-links a:hover { color: var(--green); }
+
+		@media (max-width: 900px) {
+			.page-shell { padding-right: 4%; padding-left: 4%; }
+			.main-nav { gap: 20px; }
+			.hero { min-height: 510px; }
+			.search-bar { grid-template-columns: 1.2fr 1fr 1fr auto; }
+			.search-field { padding: 0 12px; gap: 9px; }
+			.search-button { min-width: 100px; }
+			.destination-grid { grid-template-rows: 190px 190px; gap: 12px; }
+		}
+		@media (max-width: 680px) {
+			.page-shell { padding-right: 20px; padding-left: 20px; }
+			.site-header { height: 70px; gap: 12px; }
+			.brand { font-size: 19px; }
+			.main-nav { display: none; }
+			.header-actions { gap: 12px; font-size: 13px; }
+			.join { padding: 10px 14px; }
+			.hero { min-height: 500px; border-radius: 20px; background-position: 57% center; }
+			.hero::before { background: linear-gradient(90deg, rgba(20,35,29,.62), rgba(20,35,29,.16)), linear-gradient(0deg, rgba(20,35,29,.25), transparent 50%); }
+			.hero-content { padding: 47px 26px 85px; }
+			h1 { font-size: clamp(42px, 11vw, 60px); letter-spacing: -1.8px; }
+			.hero-copy { max-width: 320px; font-size: 14px; }
+			.hero-note { right: 20px; bottom: 20px; }
+			.search-wrap { width: calc(100% - 34px); margin-top: -25px; }
+			.search-bar { grid-template-columns: 1fr 1fr; gap: 0; padding: 9px; }
+			.search-field { min-height: 59px; padding: 8px 10px; }
+			.search-field:nth-child(2) { border-right: 0; }
+			.search-field:nth-child(3) { border-top: 1px solid var(--line); }
+			.search-button { min-height: 48px; height: auto; margin: 5px; }
+			.section { padding-top: 70px; }
+			.section-heading { align-items: start; }
+			.section-subtitle { max-width: 245px; line-height: 1.7; }
+			.text-link { margin-top: 27px; font-size: 12px; }
+			.destination-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 230px 170px 170px; gap: 11px; }
+			.destination-card:first-child { grid-column: span 2; grid-row: auto; }
+			.destination-info { right: 14px; bottom: 14px; left: 14px; }
+			.destination-info h3 { font-size: 17px; }
+			.destination-count { padding: 6px 8px; font-size: 10px; }
+			.inspiration { padding: 70px 0; }
+			.inspiration-panel { min-height: 430px; align-items: end; }
+			.inspiration-panel img { width: 100%; height: 61%; }
+			.inspiration-panel::after { background: linear-gradient(0deg, #e8e9dc 0%, #e8e9dc 37%, rgba(232,233,220,.68) 54%, rgba(232,233,220,0) 78%); }
+			.inspiration-copy { width: 100%; padding: 37px 25px 31px; }
+			.footer-inner { flex-direction: column; }
+		}
+		@media (max-width: 390px) {
+			.login { display: none; }
+			.section-heading { gap: 10px; }
+			.text-link { gap: 4px; }
+		}
+	</style>
+</head>
+<body>
+	<div class="page-shell">
+		<header class="site-header">
+			<a class="brand" href="#top" aria-label="拾光旅行首页">
+				<span class="brand-mark" aria-hidden="true">
+					<svg viewBox="0 0 24 24" fill="none"><path d="M3 17.5 9.1 7l3.2 5.1 2.3-3.4L21 17.5H3Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="m7.5 17.5 2.6-4.4 2.7 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.5" cy="5.5" r="1.5" fill="currentColor"/></svg>
+				</span>
+				拾光旅行
+			</a>
+			<nav class="main-nav" aria-label="主导航">
+				<a class="active" href="#top">首页</a>
+				<a href="#destinations">目的地</a>
+				<a href="#inspiration">旅行灵感</a>
+				<a href="#footer">关于我们</a>
+			</nav>
+			<div class="header-actions">
+				<a class="login" href="#footer">登录</a>
+				<a class="join" href="#destinations">开启旅程</a>
+			</div>
+		</header>
+
+		<main id="top">
+			<section class="hero" aria-label="旅行主视觉">
+				<div class="hero-content">
+					<div class="eyebrow">让日常，去远方</div>
+					<h1>把世界，<br>慢慢走一遍。</h1>
+					<p class="hero-copy">不赶路，去感受路。<br>发现那些让心重新变得柔软的地方。</p>
+					<a class="hero-link" href="#destinations">寻找你的下一站 <span aria-hidden="true">↗</span></a>
+				</div>
+				<div class="hero-note">云南 · 雨崩村</div>
+			</section>
+
+			<div class="search-wrap">
+				<form class="search-bar" action="#destinations" role="search">
+					<div class="search-field">
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 10.2c0 5.1-8 11-8 11s-8-5.9-8-11a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.6" stroke="currentColor" stroke-width="1.7"/></svg>
+						<div class="field-copy"><label for="destination">想去哪里</label><input id="destination" name="destination" type="search" placeholder="城市、国家或关键词"></div>
+					</div>
+					<div class="search-field">
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 3.5v3M16.5 3.5v3M3.5 9.5h17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+						<div class="field-copy"><label for="date">出发时间</label><input id="date" name="date" type="text" placeholder="选择日期" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'"></div>
+					</div>
+					<div class="search-field">
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.3" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 20v-1.3a5.5 5.5 0 0 1 11 0V20M16 5.2a3.3 3.3 0 0 1 0 6.3m1.2 3.8a5.5 5.5 0 0 1 3.3 5v.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+						<div class="field-copy"><label for="people">出行人数</label><input id="people" name="people" type="text" placeholder="2 位旅行者"></div>
+					</div>
+					<button class="search-button" type="submit"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.3 4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>开始探索</button>
+				</form>
+			</div>
+
+			<section class="section" id="destinations">
+				<div class="section-heading">
+					<div>
+						<p class="section-kicker">精选目的地 · CURATED FOR YOU</p>
+						<h2>总有一处风景，正等着你</h2>
+						<p class="section-subtitle">从熟悉的日常出发，去看看世界不同的模样。</p>
+					</div>
+					<a class="text-link" href="#inspiration">探索全部目的地 <span aria-hidden="true">→</span></a>
+				</div>
+				<div class="destination-grid">
+					<a class="destination-card" href="#inspiration" aria-label="探索云南大理">
+						<img src="https://images.unsplash.com/photo-1513415756790-0a0b3e1b8c14?auto=format&fit=crop&w=1000&q=85" alt="洱海边苍山与湖水相映的风景" loading="lazy">
+						<div class="destination-info"><div><h3>云南 · 大理</h3><p>风花雪月，慢下来生活</p></div><span class="destination-count">12 条路线</span></div>
+					</a>
+					<a class="destination-card" href="#inspiration" aria-label="探索日本京都">
+						<img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=85" alt="京都传统街巷与远处的山景" loading="lazy">
+						<div class="destination-info"><div><h3>日本 · 京都</h3><p>在古都遇见四季</p></div><span class="destination-count">8 条路线</span></div>
+					</a>
+					<a class="destination-card" href="#inspiration" aria-label="探索冰岛">
+						<img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&w=800&q=85" alt="冰岛瀑布从绿色山崖倾泻而下" loading="lazy">
+						<div class="destination-info"><div><h3>冰岛 · 南岸</h3><p>去地球尽头看极光</p></div><span class="destination-count">6 条路线</span></div>
+					</a>
+					<a class="destination-card" href="#inspiration" aria-label="探索意大利多洛米蒂">
+						<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=85" alt="阿尔卑斯山间宁静的湖泊风光" loading="lazy">
+						<div class="destination-info"><div><h3>意大利 · 多洛米蒂</h3><p>山野之间，自有答案</p></div><span class="destination-count">5 条路线</span></div>
+					</a>
+					<a class="destination-card" href="#inspiration" aria-label="探索泰国清迈">
+						<img src="https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?auto=format&fit=crop&w=800&q=85" alt="热带山谷中被绿意环绕的泰式寺庙" loading="lazy">
+						<div class="destination-info"><div><h3>泰国 · 清迈</h3><p>在山城找回松弛感</p></div><span class="destination-count">9 条路线</span></div>
+					</a>
+				</div>
+			</section>
+
+			<section class="inspiration" id="inspiration">
+				<div class="inspiration-panel">
+					<img src="https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1300&q=85" alt="晨光照亮森林与山谷中的野生动物" loading="lazy">
+					<div class="inspiration-copy">
+						<p class="section-kicker">TRAVEL JOURNAL · 旅行手记</p>
+						<h2>把脚步交给山野，<br>把心留给此刻。</h2>
+						<p>有些风景不在地图上，而在你终于放慢脚步之后。收藏灵感，下一次出发就从这里开始。</p>
+						<a class="solid-link" href="#destinations">阅读旅行故事 <span aria-hidden="true">→</span></a>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer" id="footer">
+			<div class="footer-inner">
+				<span>© 2026 拾光旅行 · 把每一次出发，都变成好故事。</span>
+				<div class="footer-links"><a href="#top">联系我们</a><a href="#top">隐私政策</a><a href="#top">服务条款</a></div>
+			</div>
+		</footer>
+	</div>
+</body>
+</html>
